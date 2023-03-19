@@ -1,0 +1,14 @@
+[Unit]
+Description=Monitors the Pi
+
+[Service]
+User=root
+StandardOutput=append:/var/log/pi_manager.log
+StandardError=append:/var/log/pi_manager.err
+WorkingDirectory=<local_path>
+ExecStart=<executable> <local_path>main.py
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
