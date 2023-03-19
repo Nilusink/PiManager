@@ -117,13 +117,13 @@ def read(c: db.Connection):
         voltage=core_voltage,
         clock=core_clock,
         temp=core_temp,
-        usage=cpu_usage,
+        usage=cpu_usage
     ))
 
     c.execute(db.Insert(WRITABLE_EMP).values(
         time=time.time(),
         ram_total=mem_phys,
-        ram_left=mem_avail,
+        ram_left=mem_avail
     ))
 
 

@@ -104,7 +104,7 @@ main() {
     printf "%b::%b Selecting python version ..." "$CLR_BLUE" "$CLR_RESET"
     # define minimum python version required
     min_version_major=3;
-    min_version_minor=12;
+    min_version_minor=10;
     min_version_patch=0;
 
     # List all Python executables in PATH
