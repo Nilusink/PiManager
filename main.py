@@ -11,6 +11,7 @@ import sqlalchemy as db
 import typing as tp
 import subprocess
 import time
+import os
 
 
 INTERVAL: int = 10  # interval in seconds
@@ -41,7 +42,13 @@ CPU_INFO_EMP = db.Table(
 )
 
 
-def only_number(inp: str, conv_to: tp.Type[_T] = int) -> _T:
+# create db if it doesn't exist yet
+if not os.path.isfile("./main.db"):
+    ENGINE = db.create_engine(f'sqlite:///main.db', echo=False)
+    META.create_all(ENGINE)
+
+
+def only_number(inp: str, conv_to: tp.Type[_T] = float) -> _T:
     """
     remove everything except the number
 
@@ -49,7 +56,7 @@ def only_number(inp: str, conv_to: tp.Type[_T] = int) -> _T:
     :param conv_to: type to convert to
     """
     out: str = ""
-    for char in inp:
+    for char in str(inp):
         if char.isdigit():
             out += char
 
@@ -116,8 +123,8 @@ def read(c: db.Connection):
         time=time.time(),
         voltage=core_voltage,
         clock=core_clock,
-        temp=core_temp,
-        usage=cpu_usage
+        temperature=core_temp,
+        load=cpu_usage
     ))
 
     c.execute(db.Insert(WRITABLE_EMP).values(
