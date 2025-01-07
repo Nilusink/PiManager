@@ -115,12 +115,13 @@ def read(c: db.Connection):
     ).decode())
     core_clock = only_number(subprocess.check_output(
         ["vcgencmd", "measure_clock", "core"]
-    ).decode())
+    ).decode(), int)
     cpu_usage = get_usage()
     mem_phys, mem_avail = get_memory_info()
 
+    curr_time = int(time.time())
     c.execute(db.Insert(CPU_INFO_EMP).values(
-        time=time.time(),
+        time=curr_time,
         voltage=core_voltage,
         clock=core_clock,
         temperature=core_temp,
@@ -128,7 +129,7 @@ def read(c: db.Connection):
     ))
 
     c.execute(db.Insert(WRITABLE_EMP).values(
-        time=time.time(),
+        time=curr_time,
         ram_total=mem_phys,
         ram_left=mem_avail
     ))
